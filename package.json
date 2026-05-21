@@ -1,0 +1,23 @@
+{
+  "name": "tech-radar-evaluations",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SoftServe technology radar — markdown entries and Docusaurus site",
+  "scripts": {
+    "radar:data": "node scripts/build-radar-data.mjs",
+    "radar:sync": "node scripts/sync-radar-data.mjs",
+    "prepare:radar": "npm run radar:data && npm run radar:sync",
+    "prebuild": "npm run prepare:radar",
+    "build": "npm run build --ignore-scripts --prefix website",
+    "prestart": "npm run prepare:radar",
+    "start": "npm run start --ignore-scripts --prefix website",
+    "serve": "npm run serve --prefix website",
+    "validate": "node scripts/validate-entry.mjs --all",
+    "typecheck": "npm run typecheck --prefix website",
+    "install:website": "npm install --prefix website",
+    "postinstall": "npm run install:website"
+  },
+  "engines": {
+    "node": ">=20.0"
+  }
+}

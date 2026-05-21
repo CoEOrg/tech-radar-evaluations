@@ -4,23 +4,33 @@ Static site for the SoftServe technology radar. Markdown entries live in `../rad
 
 ## Local development
 
-From the repository root:
+From the **repository root** (recommended):
 
 ```bash
-node scripts/build-radar-data.mjs
-cp generated/radar-data.json website/static/radar-data.json
-cd website && npm install && npm start
+npm install
+npm start
 ```
 
-Root-level npm scripts (step 7) will automate data generation before `build`.
+`prestart` generates radar JSON and copies it to `static/radar-data.json` before the dev server starts.
+
+From `website/` only:
+
+```bash
+npm install
+npm start
+```
 
 ## Production build
 
+From the repository root:
+
 ```bash
-cd website && npm run build
+npm run build
 ```
 
-Output is in `website/build/`, deployed to GitHub Pages via CI (step 12).
+`prebuild` runs data generation and sync, then builds Docusaurus into `website/build/`.
+
+Output is deployed to GitHub Pages via CI (step 12).
 
 ## Site URL
 

@@ -4,6 +4,9 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
+    "prepare:radar": "node ../scripts/build-radar-data.mjs && node ../scripts/sync-radar-data.mjs",
+    "prestart": "npm run prepare:radar",
+    "prebuild": "npm run prepare:radar",
     "start": "docusaurus start",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
