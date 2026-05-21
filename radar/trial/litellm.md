@@ -3,7 +3,7 @@ name: LiteLLM
 quadrant: ai-emerging
 ring: trial
 ring_changed: 2026-03-15
-owners: [jane.doe, mike.smith]
+owners: [jane-doe, mike-smith]
 poc_repo: https://github.com/your-org/radar-litellm
 status: active
 tags: [llm-gateway, python, openai-compatible]
@@ -39,4 +39,4 @@ Do not position as the long-term enterprise AI platform without a security and S
 
 ## Who to ask
 
-Jane Doe built the initial PoC. Mike Smith integrated it into the Acme Corp prototype in Q1.
+jane-doe built the initial PoC. mike-smith integrated it into the Acme Corp prototype in Q1.

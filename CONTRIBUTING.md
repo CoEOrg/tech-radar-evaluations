@@ -39,7 +39,7 @@ You do not need to clone the repo or run a local build to add an entry, though l
 | `quadrant` | Yes | One of the quadrant IDs above |
 | `ring` | Yes | `adopt`, `trial`, `assess`, or `hold` — must match the parent folder |
 | `ring_changed` | Yes | ISO date `YYYY-MM-DD` when the entry moved to this ring |
-| `owners` | Yes | GitHub usernames (no `@`), e.g. `[jane.doe, mike.smith]` |
+| `owners` | Yes | GitHub usernames (no `@`), e.g. `[jane-doe, mike-smith]` |
 | `poc_repo` | Yes | HTTPS URL: `https://github.com/org/repo` |
 | `status` | Yes | `active` or `archived` |
 | `tags` | No | Short labels for search and the entries table |
