@@ -1,0 +1,73 @@
+.section {
+  margin: 2rem 0 3rem;
+}
+
+.title {
+  margin-bottom: 1rem;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) auto auto auto;
+  gap: 0.75rem 1rem;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.name {
+  font-weight: 600;
+}
+
+.meta {
+  font-size: 0.875rem;
+  color: var(--ifm-color-emphasis-700);
+  white-space: nowrap;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.ringAdopt {
+  background: #5ba30033;
+  color: #3d6d00;
+}
+
+.ringTrial {
+  background: #009eb033;
+  color: #006a75;
+}
+
+.ringAssess {
+  background: #c7ba0033;
+  color: #6b6400;
+}
+
+.ringHold {
+  background: #e09b9633;
+  color: #8a4a44;
+}
+
+@media (max-width: 768px) {
+  .item {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+}

@@ -1,0 +1,30 @@
+.wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin: 0 auto 2rem;
+  background: var(--ifm-background-color);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.svgHost {
+  display: flex;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.svgHost svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.status {
+  text-align: center;
+  padding: 2rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.error {
+  color: var(--ifm-color-danger);
+}
