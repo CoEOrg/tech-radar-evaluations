@@ -18,10 +18,15 @@ import {
   RINGS,
   STATUSES,
 } from './radar-config.mjs';
+import {
+  collectAllEntries,
+  extractH2Headings,
+  parseFrontmatter,
+  relativeRadarPath,
+  ringFromPath,
+  sectionContent,
+} from './parse-entry.mjs';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = path.resolve(__dirname, '..');
-const RADAR_ROOT = path.join(REPO_ROOT, 'radar');
 const ENTRY_PATH_RE = /^radar\/(adopt|trial|assess|hold)\/[^/]+\.md$/;
 
 const PLACEHOLDER_HEADING_SNIPPETS = [
@@ -35,81 +40,6 @@ const PLACEHOLDER_HEADING_SNIPPETS = [
   'Name the people behind the PoC',
 ];
 
-function parseFrontmatter(content) {
-  const normalized = content.replace(/\r\n/g, '\n');
-  if (!normalized.startsWith('---\n')) {
-    return { error: 'File must start with YAML frontmatter (---)' };
-  }
-  const end = normalized.indexOf('\n---\n', 4);
-  if (end === -1) {
-    return { error: 'Frontmatter closing --- not found' };
-  }
-  const yaml = normalized.slice(4, end);
-  const body = normalized.slice(end + 5);
-  return { data: parseYamlBlock(yaml), body };
-}
-
-function parseYamlBlock(yaml) {
-  const data = {};
-  for (const line of yaml.split('\n')) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) continue;
-    const match = /^([a-z_]+):\s*(.*)$/i.exec(trimmed);
-    if (!match) continue;
-    const [, key, raw] = match;
-    data[key] = parseYamlValue(raw);
-  }
-  return data;
-}
-
-function parseYamlValue(raw) {
-  const trimmed = raw.trim();
-  if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
-    const inner = trimmed.slice(1, -1).trim();
-    if (!inner) return [];
-    return inner.split(',').map((part) => stripQuotes(part.trim()));
-  }
-  return stripQuotes(trimmed);
-}
-
-function stripQuotes(value) {
-  if (
-    (value.startsWith('"') && value.endsWith('"')) ||
-    (value.startsWith("'") && value.endsWith("'"))
-  ) {
-    return value.slice(1, -1);
-  }
-  return value;
-}
-
-function extractH2Headings(body) {
-  const headings = [];
-  for (const line of body.split('\n')) {
-    const match = /^##\s+(.+?)\s*$/.exec(line);
-    if (match) headings.push(match[1]);
-  }
-  return headings;
-}
-
-function relativeRadarPath(filePath) {
-  return path.relative(REPO_ROOT, path.resolve(filePath)).split(path.sep).join('/');
-}
-
-function ringFromPath(relativePath) {
-  const match = /^radar\/(adopt|trial|assess|hold)\//.exec(relativePath);
-  return match ? match[1] : null;
-}
-
-function sectionContent(body, heading) {
-  const marker = `## ${heading}`;
-  const start = body.indexOf(marker);
-  if (start === -1) return '';
-  const after = body.slice(start + marker.length);
-  const next = after.search(/\n## /);
-  const chunk = next === -1 ? after : after.slice(0, next);
-  return chunk.replace(/^\s+/, '').trim();
-}
-
 function isPlaceholderSection(text) {
   const normalized = text.toLowerCase();
   return PLACEHOLDER_HEADING_SNIPPETS.some((snippet) =>
@@ -117,7 +47,7 @@ function isPlaceholderSection(text) {
   );
 }
 
-function validateEntry(filePath) {
+export function validateEntry(filePath) {
   const errors = [];
   const relativePath = relativeRadarPath(filePath);
 
@@ -238,20 +168,6 @@ function validateEntry(filePath) {
   return errors;
 }
 
-function collectAllEntries() {
-  const files = [];
-  for (const ring of RINGS) {
-    const dir = path.join(RADAR_ROOT, ring);
-    if (!fs.existsSync(dir)) continue;
-    for (const name of fs.readdirSync(dir)) {
-      if (name.endsWith('.md')) {
-        files.push(path.join(dir, name));
-      }
-    }
-  }
-  return files.sort();
-}
-
 function main() {
   const args = process.argv.slice(2);
   let files;
@@ -289,4 +205,10 @@ function main() {
   process.exit(failed ? 1 : 0);
 }
 
-main();
+const isMain =
+  process.argv[1] &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isMain) {
+  main();
+}
