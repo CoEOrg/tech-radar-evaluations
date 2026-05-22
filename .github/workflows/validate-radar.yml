@@ -1,0 +1,88 @@
+name: Validate radar entries
+
+on:
+  pull_request:
+    paths:
+      - 'radar/**'
+      - 'scripts/validate-entry.mjs'
+      - 'scripts/radar-config.mjs'
+      - 'scripts/parse-entry.mjs'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Determine validation scope
+        id: scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          script_changes="$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" -- \
+            scripts/validate-entry.mjs \
+            scripts/radar-config.mjs \
+            scripts/parse-entry.mjs || true)"
+
+          if [ -n "$script_changes" ]; then
+            echo "mode=all" >> "$GITHUB_OUTPUT"
+            echo "Validation scripts changed; validating all entries."
+            exit 0
+          fi
+
+          changed="$(git diff --name-only --diff-filter=ACMRT "$BASE_SHA" "$HEAD_SHA" \
+            | grep -E '^radar/(adopt|trial|assess|hold)/[^/]+\.md$' \
+            | grep -v 'entry-template\.md$' || true)"
+
+          if [ -z "$changed" ]; then
+            echo "mode=skip" >> "$GITHUB_OUTPUT"
+            echo "No publishable radar entry changes in this PR."
+            exit 0
+          fi
+
+          existing=""
+          while IFS= read -r file; do
+            [ -n "$file" ] || continue
+            if [ -f "$file" ]; then
+              existing="${existing}${file}"$'\n'
+            fi
+          done <<< "$changed"
+
+          if [ -z "$existing" ]; then
+            echo "mode=skip" >> "$GITHUB_OUTPUT"
+            echo "Only deleted or moved-away entries changed; nothing to validate."
+            exit 0
+          fi
+
+          printf '%s' "$existing" > changed-entries.txt
+          echo "mode=files" >> "$GITHUB_OUTPUT"
+          echo "Changed entries:"
+          cat changed-entries.txt
+
+      - name: Validate all entries
+        if: steps.scope.outputs.mode == 'all'
+        run: npm run validate
+
+      - name: Validate changed entries
+        if: steps.scope.outputs.mode == 'files'
+        run: |
+          mapfile -t files < changed-entries.txt
+          node scripts/validate-entry.mjs "${files[@]}"
+
+      - name: No entry changes to validate
+        if: steps.scope.outputs.mode == 'skip'
+        run: echo "Skipping entry validation for this PR."
