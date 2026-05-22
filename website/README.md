@@ -32,12 +32,14 @@ npm run build
 
 `prebuild` runs data generation and sync, then builds Docusaurus into `website/build/`.
 
-Output is deployed to GitHub Pages via CI (step 12).
+Output is deployed to GitHub Pages via [`.github/workflows/deploy-pages.yml`](../.github/workflows/deploy-pages.yml) on push to `main`.
 
 ## Site URL
 
-When GitHub Pages is enabled for `CoEOrg/tech-radar-evaluations`:
-
-`https://coeorg.github.io/tech-radar-evaluations/`
+**https://coeorg.github.io/tech-radar-evaluations/**
 
 (Adjust host casing if your GHE Pages URL differs.)
+
+## Private Pages and org-only access
+
+Repository admins: see **[docs/github-pages-setup.md](../docs/github-pages-setup.md)** for GHE Pages configuration, deployment prerequisites, and a checklist to verify the site is **not** reachable by users outside the org/repo.

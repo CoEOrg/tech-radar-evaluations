@@ -102,3 +102,4 @@ Questions about process or access: open a GitHub issue in this repository or con
 
 - [CONTRIBUTING.md](CONTRIBUTING.md) — how to add and move entries
 - [radar/entry-template.md](radar/entry-template.md) — entry template
+- [docs/github-pages-setup.md](docs/github-pages-setup.md) — GHE private Pages setup and org-only access verification
