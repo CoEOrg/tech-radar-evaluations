@@ -6,7 +6,8 @@
   "scripts": {
     "radar:data": "node scripts/build-radar-data.mjs",
     "radar:sync": "node scripts/sync-radar-data.mjs",
-    "prepare:radar": "npm run radar:data && npm run radar:sync",
+    "radar:docs": "node scripts/generate-entry-docs.mjs",
+    "prepare:radar": "npm run radar:data && npm run radar:sync && npm run radar:docs",
     "prebuild": "npm run prepare:radar",
     "build": "npm run build --ignore-scripts --prefix website",
     "prestart": "npm run prepare:radar",

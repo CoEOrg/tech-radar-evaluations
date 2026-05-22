@@ -11,7 +11,9 @@ npm install
 npm start
 ```
 
-`prestart` generates radar JSON and copies it to `static/radar-data.json` before the dev server starts.
+`prestart` generates radar JSON, syncs it to `static/radar-data.json`, and generates entry detail pages under `docs/entries/` before the dev server starts.
+
+If the radar diagram is empty, ensure `website/static/radar-data.json` exists (`npm run prepare:radar` from the repo root) and check the browser console for script load errors.
 
 From `website/` only:
 

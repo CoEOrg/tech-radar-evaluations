@@ -5,3 +5,4 @@ website/node_modules/
 website/build/
 website/.docusaurus/
 website/static/radar-data.json
+website/docs/entries/*.mdx
