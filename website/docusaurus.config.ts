@@ -7,7 +7,7 @@ const REPO = 'tech-radar-evaluations';
 const REPO_URL = `https://github.com/${ORG}/${REPO}`;
 
 const config: Config = {
-  title: 'SoftServe Tech Radar',
+  title: 'Custom Integrations Tech Radar',
   tagline: 'Evidence-based technology evaluations from our delivery teams',
   favicon: 'img/favicon.ico',
 
