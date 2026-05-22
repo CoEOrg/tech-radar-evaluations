@@ -125,3 +125,4 @@ Questions about process or access: open a GitHub issue in this repository or con
 - [radar/entry-template.md](radar/entry-template.md) — entry template
 - [website/README.md](website/README.md) — local development and production build
 - [docs/github-pages-setup.md](docs/github-pages-setup.md) — GHE private Pages setup and org-only access verification
+- [docs/ci-smoke-test.md](docs/ci-smoke-test.md) — CI/site smoke test (`npm run smoke-test`)

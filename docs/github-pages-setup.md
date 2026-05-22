@@ -111,7 +111,7 @@ Use **signed-out browser**, **personal account outside the org**, or a test user
 | # | Check | Expected |
 |---|--------|----------|
 | C1 | Merge a trivial doc-only change to `main` | **Deploy GitHub Pages** succeeds; site updates within a few minutes |
-| C2 | Open PR with invalid entry frontmatter | **Validate radar entries** fails; merge blocked if branch protection requires checks |
+| C2 | Open PR with invalid entry frontmatter | **Validate radar entries** fails; merge blocked if branch protection requires checks ([ci-smoke-test.md](ci-smoke-test.md)) |
 
 ### D. Enterprise SSO (if applicable)
 

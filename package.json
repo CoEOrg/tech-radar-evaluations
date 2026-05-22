@@ -14,6 +14,8 @@
     "start": "npm run start --ignore-scripts --prefix website",
     "serve": "npm run serve --prefix website",
     "validate": "node scripts/validate-entry.mjs --all",
+    "smoke-test": "node scripts/smoke-test.mjs",
+    "smoke-test:full": "node scripts/smoke-test.mjs --build",
     "typecheck": "npm run typecheck --prefix website",
     "install:website": "npm install --prefix website",
     "postinstall": "npm run install:website"
