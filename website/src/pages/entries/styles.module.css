@@ -1,0 +1,17 @@
+.header {
+  margin-bottom: 1.5rem;
+}
+
+.lead {
+  margin: 0.5rem 0 0;
+  color: var(--ifm-color-emphasis-700);
+  max-width: 42rem;
+}
+
+.status {
+  color: var(--ifm-color-emphasis-600);
+}
+
+.error {
+  color: var(--ifm-color-danger);
+}

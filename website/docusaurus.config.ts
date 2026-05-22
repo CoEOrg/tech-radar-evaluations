@@ -59,6 +59,7 @@ const config: Config = {
       },
       items: [
         {to: '/', label: 'Radar', position: 'left'},
+        {to: '/entries', label: 'Entries', position: 'left'},
         {to: '/docs/intro', label: 'About', position: 'left'},
         {
           href: `${REPO_URL}/blob/main/CONTRIBUTING.md`,
@@ -79,6 +80,7 @@ const config: Config = {
           title: 'Radar',
           items: [
             {label: 'Home', to: '/'},
+            {label: 'All entries', to: '/entries'},
             {label: 'About', to: '/docs/intro'},
           ],
         },
