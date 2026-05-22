@@ -6,7 +6,7 @@ This repository is the source of truth for our technology evaluations. Each tech
 
 1. Copy [radar/entry-template.md](radar/entry-template.md) into the ring folder that matches the entry’s current ring, e.g. `radar/trial/my-tool.md`.
 2. Fill in the YAML frontmatter and every section in the body.
-3. Open a pull request against `main`. CI validates frontmatter and required headings.
+3. Open a pull request against `main`. Use the PR template checklist; CI validates frontmatter and required headings.
 4. After review and merge, the site rebuilds automatically.
 
 You do not need to clone the repo or run a local build to add an entry, though local validation is available (see below).

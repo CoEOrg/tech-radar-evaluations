@@ -1,0 +1,21 @@
+# Default code owners for pull request review requests.
+# Replace placeholder teams with real @CoEOrg/<team> names from your org.
+# GitHub ignores lines that reference teams/users that do not exist.
+#
+# Quadrant leads review by topic (see frontmatter `quadrant`), not by folder path.
+# Suggested team names (create in GitHub and uncomment as needed):
+#   integration-platforms  → integration-platforms-leads
+#   languages-frameworks   → languages-frameworks-leads
+#   developer-experience   → developer-experience-leads
+#   ai-emerging            → ai-emerging-leads
+
+# Repository maintainers (radar program / site / CI)
+* @CoEOrg/coe-radar-maintainers
+
+# Radar markdown entries
+/radar/ @CoEOrg/coe-radar-maintainers
+
+# Build, validation, and published site
+/scripts/ @CoEOrg/coe-radar-maintainers
+/website/ @CoEOrg/coe-radar-maintainers
+/.github/ @CoEOrg/coe-radar-maintainers

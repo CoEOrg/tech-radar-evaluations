@@ -134,6 +134,11 @@ If the org uses **SAML SSO**:
 | Deploy job fails at upload/deploy | Pages not enabled or environment blocked | Enable Actions Pages; relax `github-pages` environment rules |
 | Site public when it should be private | Repo or Pages visibility too open | Set repo **Private**; restrict teams; review Pages visibility setting |
 
+## Governance
+
+- Pull requests use [`.github/pull_request_template.md`](../.github/pull_request_template.md) (checklist from [CONTRIBUTING.md](../CONTRIBUTING.md)).
+- [`.github/CODEOWNERS`](../.github/CODEOWNERS) requests review from `@CoEOrg/coe-radar-maintainers` — create that team or edit the file to match your org.
+
 ## Related documentation
 
 - [CONTRIBUTING.md](../CONTRIBUTING.md) — adding and validating entries
