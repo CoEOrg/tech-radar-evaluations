@@ -1,8 +1,42 @@
 # Tech Radar — Technology Evaluations
 
-A living **technology radar** for SoftServe: curated evaluations of tools and platforms we have tried in delivery, published as markdown in this repository and rendered as an internal site (GitHub Pages).
+A living **technology radar** for SoftServe: curated evaluations of tools and platforms we have tried in delivery, published as markdown in this repository and rendered as an internal site on **GitHub Pages**.
 
 Every technology decision—add, move between rings, or retire—is a **pull request**, so the radar stays reviewable, auditable, and easy to update without a separate CMS or database.
+
+## Live site
+
+**https://coeorg.github.io/tech-radar-evaluations/**
+
+| Page | URL |
+|------|-----|
+| Radar home | [/](https://coeorg.github.io/tech-radar-evaluations/) |
+| All entries (sort/filter) | [/entries](https://coeorg.github.io/tech-radar-evaluations/entries) |
+| About | [/docs/intro](https://coeorg.github.io/tech-radar-evaluations/docs/intro) |
+
+Access is limited to users who can read this repository (private org radar). Admins: [docs/github-pages-setup.md](docs/github-pages-setup.md).
+
+## Contributor quick start
+
+**Fastest path (GitHub web UI — no clone required):**
+
+1. Open **[radar/entry-template.md](radar/entry-template.md)** and copy it into `radar/<ring>/your-technology.md` (ring = `adopt`, `trial`, `assess`, or `hold`).
+2. Fill in YAML frontmatter and every required section — especially **What didn't**.
+3. Set `poc_repo` to your PoC repository (`https://github.com/org/repo`).
+4. Commit on a branch and open a **pull request to `main`**.
+5. Wait for **Validate radar entries** CI to pass; get review from your quadrant lead (and someone who used the tech, when possible).
+6. After merge, the site redeploys automatically (usually within a few minutes).
+
+**Optional local check** (from a clone):
+
+```bash
+npm install
+npm run validate                              # all entries
+node scripts/validate-entry.mjs radar/trial/your-technology.md
+npm start                                     # http://localhost:3000/tech-radar-evaluations/
+```
+
+Full rules (rings, quadrants, PR checklist): **[CONTRIBUTING.md](CONTRIBUTING.md)**.
 
 ## Purpose
 
@@ -19,25 +53,24 @@ The goal is to turn scattered PoC learnings into durable guidance for teams and 
 
 | Who | How they use it |
 |-----|-----------------|
-| **Engineers & architects** | Explore the radar visualization, read detail pages, link PoCs into proposals |
+| **Engineers & architects** | Explore the [radar visualization](https://coeorg.github.io/tech-radar-evaluations/), read detail pages, link PoCs into proposals |
 | **Delivery leads & CoE** | Review ring moves via PRs, keep quadrants current, govern quality of entries |
-| **PMs & account teams** | Use the **all entries** table view for quick scanning (when the site is live) |
-| **Contributors** | Add or update entries after running a PoC or pilot—see [How to contribute](#how-to-contribute) |
+| **PMs & account teams** | Use the [**all entries**](https://coeorg.github.io/tech-radar-evaluations/entries) table for quick scanning |
+| **Contributors** | Add or update entries after a PoC or pilot — [Contributor quick start](#contributor-quick-start) |
 
 ## What you will find here
 
 - **`radar/`** — One markdown file per technology, organized by ring: `adopt`, `trial`, `assess`, `hold`
 - **`radar/entry-template.md`** — Copy-paste template for new entries
-- **`scripts/`** — Validation and build tooling (radar data generation for the site)
+- **`website/`** — Docusaurus site (radar UI, entry pages, `/entries` table)
+- **`scripts/`** — Validation and build tooling (radar JSON + generated docs)
 - **`CONTRIBUTING.md`** — Full contributor playbook (rings, quadrants, frontmatter, PR checklist)
 
-The published site (in progress) will provide:
+The published site provides:
 
 - Interactive **radar diagram** (four quadrants, four rings)
 - **Detail pages** per entry (owners, PoC repo link, evaluation narrative)
 - **`/entries`** sortable table for list-oriented browsing
-
-> **Site URL:** Will be documented here once GitHub Pages is enabled for this repository.
 
 ## Radar model (short)
 
@@ -56,34 +89,22 @@ Folder path and frontmatter `ring` must stay in sync. See [CONTRIBUTING.md](CONT
 
 ## How to contribute
 
-1. Read **[CONTRIBUTING.md](CONTRIBUTING.md)** — rings, quadrants, required frontmatter, and body sections.
-2. Copy **[radar/entry-template.md](radar/entry-template.md)** into `radar/<ring>/your-technology.md`.
-3. Fill in honest evaluation content, especially **What didn't**.
-4. Link the **PoC repository** in frontmatter (`poc_repo`).
-5. Open a pull request to `main`; CI will validate structure (when workflows are enabled).
-
-You can add or edit entries from the **GitHub web UI** without cloning locally. Optional local check (after validation script is wired):
-
-```bash
-node scripts/validate-entry.mjs radar/trial/your-technology.md
-```
-
-Ring changes (e.g. Trial → Adopt) are done by editing frontmatter, moving the file to the new ring folder, and opening a PR—the PR is the record of the decision.
+See **[Contributor quick start](#contributor-quick-start)** above. Ring changes (e.g. Trial → Adopt): edit frontmatter (`ring`, `ring_changed`), move the file to the new folder, open a PR — the PR is the record of the decision.
 
 ## Repository layout
 
 ```
 tech-radar-evaluations/
-├── README.md                 ← you are here
-├── CONTRIBUTING.md           ← contributor playbook
+├── README.md
+├── CONTRIBUTING.md
+├── docs/
+│   └── github-pages-setup.md   ← GHE Pages + access verification
 ├── radar/
 │   ├── entry-template.md
-│   ├── adopt/
-│   ├── trial/
-│   ├── assess/
-│   └── hold/
-└── scripts/
-    └── radar-config.mjs      ← shared rings, quadrants, validation rules
+│   ├── adopt/ | trial/ | assess/ | hold/
+├── scripts/                    ← validate, build JSON, generate MDX
+├── website/                    ← Docusaurus app
+└── .github/workflows/          ← PR validation + Pages deploy
 ```
 
 ## Contributors
@@ -102,4 +123,5 @@ Questions about process or access: open a GitHub issue in this repository or con
 
 - [CONTRIBUTING.md](CONTRIBUTING.md) — how to add and move entries
 - [radar/entry-template.md](radar/entry-template.md) — entry template
+- [website/README.md](website/README.md) — local development and production build
 - [docs/github-pages-setup.md](docs/github-pages-setup.md) — GHE private Pages setup and org-only access verification
