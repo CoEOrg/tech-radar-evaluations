@@ -3,6 +3,10 @@ import type {RadarVisualizationEntry} from '@site/src/global';
 
 const RING_COLORS = ['#5ba300', '#009eb0', '#c7ba00', '#e09b96'];
 
+/** Zalando radar-0.12 default canvas; smaller sizes clip quadrant legends. */
+export const RADAR_LAYOUT_WIDTH = 1450;
+export const RADAR_LAYOUT_HEIGHT = 1000;
+
 export function docRouteForSlug(slug: string): string {
   return `/docs/entries/${slug}`;
 }
@@ -14,6 +18,11 @@ export function resolveSiteUrl(baseUrl: string, path: string): string {
   const normalized = path.startsWith('/') ? path : `/${path}`;
   const prefix = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
   return `${prefix}${normalized}`;
+}
+
+export function computeRadarScale(containerWidth: number): number {
+  const available = Math.max(containerWidth - 32, 320);
+  return Math.min(1, available / RADAR_LAYOUT_WIDTH);
 }
 
 export function buildVizEntries(
@@ -41,6 +50,8 @@ export function buildRadarConfig(
   data: RadarData,
   resolveUrl: (path: string) => string,
   svgId: string,
+  scale = 1,
+  colorMode: 'light' | 'dark' = 'light',
 ) {
   const quadrants = [...data.quadrants]
     .sort((a, b) => a.index - b.index)
@@ -53,14 +64,33 @@ export function buildRadarConfig(
       color: RING_COLORS[index] ?? '#888',
     }));
 
+  // radar-0.12.js sets svg_id from config.svg (not config.svg_id).
+  // print_layout must be true: legend DOM (legendItem*) is only created then;
+  // blip hover calls highlightLegendItem() which requires those elements.
   return {
-    svg_id: svgId,
-    width: 1200,
-    height: 900,
-    scale: 1,
+    svg: svgId,
+    width: RADAR_LAYOUT_WIDTH,
+    height: RADAR_LAYOUT_HEIGHT,
+    scale,
     links_in_new_tabs: false,
-    print_layout: false,
-    title: `Tech Radar ${data.viz.date}`,
+    print_layout: true,
+    date: data.viz.date,
+    repo_url: 'https://github.com/CoEOrg/tech-radar-evaluations',
+    title: 'SoftServe Tech Radar',
+    font_family: 'Arial, Helvetica, sans-serif',
+    legend_column_width: 200,
+    colors:
+      colorMode === 'dark'
+        ? {
+            background: '#1b1b1d',
+            grid: '#6b7280',
+            inactive: '#4b5563',
+          }
+        : {
+            background: '#ffffff',
+            grid: '#b8bcc4',
+            inactive: '#d4d7dc',
+          },
     quadrants,
     rings,
     entries: buildVizEntries(data, resolveUrl),

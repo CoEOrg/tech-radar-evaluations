@@ -9,7 +9,8 @@ export type RadarVisualizationEntry = {
 
 export type RadarVisualizationConfig = {
   repo_url?: string;
-  svg_id: string;
+  /** radar-0.12.js reads `svg` and assigns it to internal svg_id */
+  svg: string;
   width: number;
   height: number;
   scale?: number;
@@ -19,11 +20,13 @@ export type RadarVisualizationConfig = {
     inactive?: string;
   };
   font_family?: string;
+  legend_column_width?: number;
   title?: string;
   quadrants: {name: string}[];
   rings: {name: string; color: string}[];
   print_layout?: boolean;
   links_in_new_tabs?: boolean;
+  date?: string;
   entries: RadarVisualizationEntry[];
 };
 
