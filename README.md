@@ -1,6 +1,6 @@
 # Tech Radar — Technology Evaluations
 
-A living **technology radar** for SoftServe: curated evaluations of tools and platforms we have tried in delivery, published as markdown in this repository and rendered as an internal site on **GitHub Pages**.
+A living **technology radar** for Custom Integrations team: curated evaluations of tools and platforms we have tried in delivery, published as markdown in this repository and rendered as an internal site on **GitHub Pages**.
 
 Every technology decision—add, move between rings, or retire—is a **pull request**, so the radar stays reviewable, auditable, and easy to update without a separate CMS or database.
 
