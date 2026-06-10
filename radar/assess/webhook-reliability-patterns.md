@@ -3,7 +3,7 @@ name: Webhook Reliability Patterns
 quadrant: integration-platforms
 ring: assess
 ring_changed: 2026-05-22
-owners: [coe-radar-maintainer]
+owners: [mmatuliak]
 poc_repo: https://github.com/coeorg/radar-webhook-reliability-patterns
 status: active
 tags: [webhooks, outbox, idempotency, integration]
@@ -19,15 +19,26 @@ Nearly every integration project needs this; nearly every project reinvents it b
 
 ## What we tried
 
-Not yet built. **Proposed scope (small):** one reference service demonstrating outbox dispatch, HMAC verification, idempotent receiver, and operator replay API with tests.
+Built a **local PoC**: publisher accepts `order.created` events, writes `events` + `outbox` in one SQLite transaction, and a background poller dispatches signed POSTs to the receiver. The receiver verifies `v1` HMAC signatures, rejects bad signatures with **401**, and deduplicates on `eventId` via a `processed_events` table.
+
+Manual scenarios exercised via README curl recipes: happy-path delivery, simulated transient **500** with exponential backoff retry, duplicate delivery after retry (receiver returns `status: duplicate`), and invalid signature (publisher marks outbox **failed**, non-retryable). Stack: Node.js 18+, Express, better-sqlite3, built-in `fetch`.
 
 ## What worked
 
-Patterns are well documented in industry literature; clients recognize the vocabulary. Fits engagements connecting SaaS products without enterprise buses.
+- **Transactional outbox** in a single DB transaction is easy to follow and maps cleanly to how teams already think about “write business data, then deliver.”
+- **Publisher/receiver split** with `shared/webhookCrypto.js` makes the signing contract obvious and copy-pasteable.
+- **Idempotency** on `eventId` handled duplicate deliveries from retries without double-processing.
+- **Retry policy** (408/429/5xx retryable, 401 non-retryable) behaved predictably in manual runs.
+- `timingSafeEqual` for signature comparison is a small but important detail to document for clients.
 
 ## What didn't
 
-No reference repo yet. Common failures we expect to document: at-least-once delivery without idempotency, clock skew on signatures, and replay endpoints without auth becoming abuse vectors.
+- **No operator replay API** yet—failed rows stay failed; recovery is manual, not an authenticated replay endpoint.
+- **No automated test suite**—validation is curl-driven only.
+- **Polling dispatcher** is fine for a sandbox; production would want CDC, a queue, or a dedicated outbox worker with observability.
+- **No clock-skew tolerance** on webhook timestamps; skew between publisher and receiver is not handled.
+- **Node.js only**—no .NET sample; teams on .NET must port patterns themselves.
+- PoC is a **personal learning sandbox**, not yet exercised on a client engagement or production-like load.
 
 ## When to recommend it to a client
 
